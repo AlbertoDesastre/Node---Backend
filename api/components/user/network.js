@@ -2,12 +2,29 @@ const express = require("express");
 const router = express.Router();
 
 const response = require("../../../network/response");
-const Controller = require("./controller");
+const Controller = require("./index");
 
 // Este archivo se encarga de conectarse a la red
 router.get("/", function (req, res) {
-  const list = Controller.list();
-  response.success(req, res, list, 200);
+  /* Ojo porque el VS no me avisó esta vez de que efectivamente el controller era una promesa.
+  Revisar por qué */
+  Controller.list()
+    .then((list) => {
+      response.success(req, res, list, 200);
+    })
+    .catch((err) => {
+      response.error(req, res, err.message, 500);
+    });
+});
+
+router.get("/:id", function (req, res) {
+  Controller.get(req.params.id)
+    .then((user) => {
+      response.success(req, res, user, 200);
+    })
+    .catch((err) => {
+      response.error(req, res, err.message, 500);
+    });
 });
 
 module.exports = router;

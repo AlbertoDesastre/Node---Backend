@@ -23,5 +23,12 @@ module.exports = function (injectedStore) {
     return store.list(TABLE, id);
   }
 
-  return { list, get };
+  function create(data) {
+    console.log(data);
+    store.upsert(TABLE, data);
+
+    return store.list(TABLE);
+  }
+
+  return { list, get, create };
 };

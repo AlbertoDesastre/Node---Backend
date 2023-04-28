@@ -13,7 +13,7 @@ async function get(table, id) {
   return col.filter((item) => item.id === id)[0] || null;
 }
 function upsert(table, data) {
-  db[collection].push(data);
+  db[table].push(data);
 }
 function remove(table, id) {
   return true;

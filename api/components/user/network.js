@@ -42,4 +42,14 @@ router.post("/create", function (req, res) {
     });
 });
 
+router.delete("/delete/:id", function (req, res) {
+  Controller.remove(req.params.id)
+    .then((list) => {
+      response.success(req, res, list, 201);
+    })
+    .catch((err) => {
+      response.error(req, res, err.message, 500);
+    });
+});
+
 module.exports = router;

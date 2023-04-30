@@ -20,7 +20,10 @@ module.exports = function (injectedStore) {
   }
 
   function get(id) {
-    return store.list(TABLE, id);
+    //id that comes from req.params it's always a string so it needs a casting
+    const idNumber = Number(id);
+
+    return store.get(TABLE, idNumber);
   }
 
   function create(data) {
@@ -30,5 +33,13 @@ module.exports = function (injectedStore) {
     return store.list(TABLE);
   }
 
-  return { list, get, create };
+  function remove(id) {
+    //id that comes from req.params it's always a string so it needs a casting
+    const idNumber = Number(id);
+    store.remove(TABLE, idNumber);
+
+    return store.list(TABLE);
+  }
+
+  return { list, get, create, remove };
 };

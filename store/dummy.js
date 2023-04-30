@@ -8,15 +8,22 @@ const db = {
 async function list(table) {
   return db[table];
 }
+
 async function get(table, id) {
   let col = await list(table);
+
   return col.filter((item) => item.id === id)[0] || null;
 }
-function upsert(table, data) {
+//checkear si esto funciona antes de hacer commit
+async function upsert(table, data) {
   db[table].push(data);
 }
-function remove(table, id) {
-  return true;
+async function remove(table, id) {
+  const indexOfUserToBeDeleted = db[table].findIndex((user) => user.id === id);
+  // console.log("this is the index to be deleted --> ", indexOfUserToBeDeleted);
+  db[table].splice(indexOfUserToBeDeleted, 1);
+
+  return db[table];
 }
 
 module.exports = {

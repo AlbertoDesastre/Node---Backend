@@ -4,10 +4,13 @@ const router = express.Router();
 const response = require("../../../network/response");
 const Controller = require("./index");
 
-router.use(express.json());
-
 // Este archivo se encarga de conectarse a la red
-router.get("/", function (req, res) {
+router.get("/", list);
+router.get("/:id", get);
+router.post("/create", create);
+router.delete("/delete/:id", remove);
+
+function list(req, res) {
   /* Ojo porque el VS no me avisó esta vez de que efectivamente el controller era una promesa.
   Revisar por qué */
   Controller.list()
@@ -17,9 +20,9 @@ router.get("/", function (req, res) {
     .catch((err) => {
       response.error(req, res, err.message, 500);
     });
-});
+}
 
-router.get("/:id", function (req, res) {
+function get(req, res) {
   Controller.get(req.params.id)
     .then((user) => {
       response.success(req, res, user, 200);
@@ -27,9 +30,9 @@ router.get("/:id", function (req, res) {
     .catch((err) => {
       response.error(req, res, err.message, 500);
     });
-});
+}
 
-router.post("/create", function (req, res) {
+function create(req, res) {
   const { id, name } = req.body;
   const data = { id, name };
 
@@ -40,9 +43,9 @@ router.post("/create", function (req, res) {
     .catch((err) => {
       response.error(req, res, err.message, 500);
     });
-});
+}
 
-router.delete("/delete/:id", function (req, res) {
+function remove(req, res) {
   Controller.remove(req.params.id)
     .then((list) => {
       response.success(req, res, list, 201);
@@ -50,6 +53,5 @@ router.delete("/delete/:id", function (req, res) {
     .catch((err) => {
       response.error(req, res, err.message, 500);
     });
-});
-
+}
 module.exports = router;

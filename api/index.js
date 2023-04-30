@@ -5,6 +5,7 @@ const config = require("../config.js");
 const user = require("./components/user/network");
 
 // Router
+app.use(express.json());
 
 app.use("/api/user", user);
 
